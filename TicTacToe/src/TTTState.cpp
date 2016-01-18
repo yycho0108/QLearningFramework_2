@@ -5,7 +5,7 @@
 
 int TTTState::width = 0;
 int TTTState::height = 0;
-enum TTTState::Cell : char{EMPTY,O,X};
+enum TTTState::Cell : char{EMPTY,O,X}; //0,1,2
 using Trait = TTTState::Trait;
 using Cell = TTTState::Cell;
 //TTTState::Trait
@@ -33,12 +33,27 @@ bool Trait::operator==(const Trait& t){
 	return ID() == t.ID();
 }
 void Trait::rehash(){
+	auto isCorner = [](int i, int j){return (i==0||i==height-1) && (j==0||j==width-1);};
+	auto isMiddle = [](int i, int j){return (i!=0&&i!=height-1) && (j!=0&&j!=width-1);};
+	//auto isSide = [&](int i, int j){return !isCorner(i,j) && !isMiddle(i,j);};
 	auto& board = *this;
-	size_t C = board[0] + board[width-1] + board[(height-1)*width] + board[(height*width)-1];
+	size_t C = 0;
+	size_t S = 0;
+	size_t M = 0;
+	for(int i=0;i<height;++i){
+		for(int j=0;j<width;++j){
+			auto id = i*width+j;
+			if(isCorner(i,j)) C+=board[id];		
+			else if(isMiddle(i,j)) M+=board[id];
+		   	else S+=board[id];	
+		}
+	}
+	/*size_t C = board[0] + board[width-1] + board[(height-1)*width] + board[(height*width)-1];
 	C <<= 3;
 	size_t S = board[1] + board[1*width] + board[2*width-1] + board[2*width+1];
 	S <<= 6;
 	size_t M = board[1*width + 1]; // just for now
+	*/
 	_hash = ((17*M + S)*31+C)+7;
 }
 void Trait::flip(){
@@ -163,7 +178,7 @@ Cell Trait::check() const{
 }
 //TTTState
 TTTState::TTTState()
-	:State(0,0,0),turn(O),board(height*width,EMPTY),done(false){
+	:State(0,0,0),turn(X),board(height*width,EMPTY),done(false){ //X Starts First
 	for(int i=0;i<height;++i){
 		for(int j=0;j<width;++j){
 			_next.push_back(std::make_shared<TTTAction>(i,j));
