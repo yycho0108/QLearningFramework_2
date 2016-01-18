@@ -1,6 +1,7 @@
-#TicTacToe
+##TicTacToe
 An implementation of Q-Learning Framework: Tic-Tac-Toe A.I.
 Expanded to also include a variation of m,n,k-game in which m=n=k.
+
 ===
 
 ## NOTES
@@ -10,6 +11,7 @@ is anticipated to replace the current cache table.
 
 For a general m,n,k-game, it seems that a convolutional neural network may also be of benefit,
 since the configuration of the game is (somewhat) independent of translation.
+
 ===
 
 #Sample Execution Image:
