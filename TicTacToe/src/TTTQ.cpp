@@ -38,7 +38,23 @@ void TTTQ::print() const{
 	Q::print();
 }
 void TTTQ::printPolicy() const{
-	Q::printPolicy();
+	std::cout << "=== POLICY ===" << std::endl;
+	auto pi = policy();
+	for(auto& p : pi){
+		auto& s = *static_cast<TTTState*>(p.first.get());
+		auto& a = *static_cast<TTTAction*>(p.second.first.get());
+		auto& w = p.second.second;
+		s.print(a);
+		std::cout << "WEIGHT : " << w << std::endl;
+		std::cout << std::endl;
+		//auto& sa = q.first.sa();
+		//auto& s = *static_cast<TTTState*>(sa->s().get());
+		//auto& a = *static_cast<TTTAction*>(sa->a().get());
+	}
+	std::cout << "SIZE : " << pi.size() << std::endl;
+	std::cout << "___ ______ ___" << std::endl;
+
+	//Q::printPolicy();
 }
 void TTTQ::init(int w, int h){
 	TTTAction::setSize(w,h);

@@ -183,6 +183,7 @@ TTTState::TTTState(const TTTState& prev,const a_ptr& a)
 :TTTState(prev){
 	//assert(board[a->ID()] == EMPTY);
 	board[a->ID()] = turn;
+	board.rehash(); //recalc hash
 	turn = (turn==O)?X:O;
 	computeReward();
 	auto aFind = [](const std::vector<a_ptr>& n, const a_ptr& a){
@@ -199,6 +200,8 @@ TTTState::TTTState(const TTTState& prev,const a_ptr& a)
 		done = true;
 	_ID = board.ID();
 	_hash = board.hash();
+	if(done)
+		_next.clear();
 }
 TTTState::~TTTState(){}
 void TTTState::setSize(int w, int h){
