@@ -1,7 +1,7 @@
 # TICTACTOE
 CC = g++
 FLAGS = -std=c++11 -O3
-LIBS = -L/usr/lib
+LIBS = -L/usr/lib -L../lib -lQ
 INCS = -I/usr/include -I./include -I../include
 
 BUILD = build
@@ -14,12 +14,6 @@ OBJECTS = $(BUILD)/TTTQ.o \
 
 TARGET = $(BUILD)/main
 
-LIBOBJECTS = ../build/Q.o \
-			 ../build/SA.o \
-			 ../build/State.o \
-			 ../build/Action.o \
-			 ../build/Utility.o
-
 all: dir lib $(TARGET)
 
 lib:
@@ -31,12 +25,12 @@ dir:
 clean:
 	rm $(BUILD)/*.o $(BUILD)/main 2> /dev/null
 
-$(BUILD)/TTTQ.o: $(SRC)/TTTQ.cpp $(LIBOBJECTS)
-$(BUILD)/TTTSA.o: $(SRC)/TTTSA.cpp $(LIBOBJECTS)
-$(BUILD)/TTTState.o: $(SRC)/TTTState.cpp $(LIBOBJECTS)
-$(BUILD)/TTTAction.o: $(SRC)/TTTAction.cpp $(LIBOBJECTS)
+$(BUILD)/TTTQ.o: $(SRC)/TTTQ.cpp
+$(BUILD)/TTTSA.o: $(SRC)/TTTSA.cpp
+$(BUILD)/TTTState.o: $(SRC)/TTTState.cpp
+$(BUILD)/TTTAction.o: $(SRC)/TTTAction.cpp
 
-$(TARGET) : $(OBJECTS) $(LIBOBJECTS) $(SRC)/main.cpp
+$(TARGET) : $(OBJECTS) $(SRC)/main.cpp
 	$(CC) $(FLAGS) $(INCS) $^ -o $@ $(LIBS)
 
 $(OBJECTS) :

@@ -12,12 +12,13 @@ OBJECTS = $(BUILD)/Q.o \
 		  $(BUILD)/Action.o \
 		  $(BUILD)/Utility.o
 
-TARGET = $(BUILD)/main
+TARGET = lib/libQ.a
 
 all: dir $(TARGET)
 
 dir:
 	mkdir -p $(BUILD)
+	mkdir -p lib
 
 $(BUILD)/Q.o: $(SRC)/Q.cpp $(BUILD)/State.o $(BUILD)/Action.o $(BUILD)/SA.o $(BUILD)/Utility.o
 $(BUILD)/SA.o: $(SRC)/SA.cpp $(BUILD)/State.o $(BUILD)/Action.o $(BUILD)/Utility.o
@@ -25,10 +26,10 @@ $(BUILD)/State.o: $(SRC)/State.cpp $(BUILD)/Action.o
 $(BUILD)/Action.o: $(SRC)/Action.cpp
 $(BUILD)/Utility.o: $(SRC)/Utility.cpp
 
-$(TARGET) : $(OBJECTS) $(SRC)/main.cpp
-	$(CC) $(FLAGS) $(INCS) $^ -o $@ $(LIBS)
+$(TARGET) : $(OBJECTS)
+	ar -rvs $(TARGET) $(OBJECTS)
 $(OBJECTS):
 	$(CC) -c $(FLAGS) $(INCS) $^ -o $@ $(LIBS)
 
 clean:
-	rm $(BUILD)/main build/*.o
+	rm lib/libQ.a build/*.o
